@@ -102,9 +102,7 @@ public class AuthController(SchoolDataContext context, EmailService emailService
                 .FirstOrDefaultAsync())!,
             _ => new { status = "error", message = "Invalid Role" }
         };
-        
         var token = tokenService.GenerateToken(userLoggedIn);
-
         return Ok(new {status = "success",message = "Logged in successfully", data = new {token, user = userLoggedIn,roleData}});
     }
 }
