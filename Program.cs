@@ -47,14 +47,17 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.Use(async (context, next) =>
-{
-    await next.Invoke();
-    if (context.Response.StatusCode == 403)
-    {
-        await context.Response.WriteAsync("You do not have permission to access this resource.");
-    }
-});
+// app.Use(async (context, next) =>
+// {
+//     await next();
+//     if (context.Response.StatusCode == 401)
+//     {
+//         context.Response.Clear();
+//         context.Response.ContentType = "application/json";
+//         
+//         Console.WriteLine("You are not authorized to access this page.");
+//         await context.Response.WriteAsync("{\"status\":\"error\",\"message\":\"You do not have permission to access this resource.\"}");}
+// });
 
 app.MapControllers();
 
