@@ -47,6 +47,15 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.Use(async (context, next) =>
+{
+    await next.Invoke();
+    if (context.Response.StatusCode == 403)
+    {
+        await context.Response.WriteAsync("You do not have permission to access this resource.");
+    }
+});
+
 app.MapControllers();
 
 app.Run();
