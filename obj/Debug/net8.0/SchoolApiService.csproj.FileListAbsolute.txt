@@ -171,3 +171,4 @@ D:\code\C#\SchoolApiService\SchoolApiService\bin\Debug\net8.0\BouncyCastle.Crypt
 D:\code\C#\SchoolApiService\SchoolApiService\bin\Debug\net8.0\MailKit.dll
 D:\code\C#\SchoolApiService\SchoolApiService\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\code\C#\SchoolApiService\SchoolApiService\bin\Debug\net8.0\MimeKit.dll
+D:\code\C#\SchoolApiService\SchoolApiService\obj\Debug\net8.0\SchoolApiService.sourcelink.json
