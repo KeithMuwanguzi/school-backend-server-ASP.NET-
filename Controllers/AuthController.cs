@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolApiService.DTOs;
 using SchoolApiService.Models;
@@ -24,7 +25,7 @@ public class AuthController(SchoolDataContext context, EmailService emailService
         await context.Students.AddAsync(newStudent);
         await context.SaveChangesAsync();
         
-        await emailService.SendEmailAsync(newUser.Email, "Email Verification", newUser.FirstName,$"https://{Request.Host}/api/Auth/verify-email?token={newUser.VerificationToken}" );
+        await emailService.SendEmailAsync(newUser.Email, "Email Verification", newUser.FirstName,$"http://{Request.Host}/api/Auth/verify-email?token={newUser.VerificationToken}" );
         
         return Ok(new {status = "success",message = "Student registered. Please make sure you verify your email!"});
     }
@@ -44,7 +45,7 @@ public class AuthController(SchoolDataContext context, EmailService emailService
         await context.Teachers.AddAsync(newTeacher);
         await context.SaveChangesAsync();
         
-        await emailService.SendEmailAsync(newUser.Email, "Email Verification", newUser.FirstName,$"https://{Request.Host}/api/Auth/verify-email?token={newUser.VerificationToken}" );
+        await emailService.SendEmailAsync(newUser.Email, "Email Verification", newUser.FirstName,$"http://{Request.Host}/api/Auth/verify-email?token={newUser.VerificationToken}" );
         
         return Ok(new {status = "success",message = "Teacher registered, Please make sure you verify your email!"});
     }
@@ -63,6 +64,7 @@ public class AuthController(SchoolDataContext context, EmailService emailService
         return Ok(new{status = "success", message = "Email Verified successfully"});
     }
 
+    [Authorize(Roles = ("Admin,Teacher"))]
     [HttpPut("set-class/{id:int}")]
     public async Task<IActionResult> SetClass(int id,[FromBody] ClassDto data)
     {
@@ -100,7 +102,7 @@ public class AuthController(SchoolDataContext context, EmailService emailService
                 .FirstOrDefaultAsync())!,
             _ => new { status = "error", message = "Invalid Role" }
         };
-
+        
         var token = tokenService.GenerateToken(userLoggedIn);
 
         return Ok(new {status = "success",message = "Logged in successfully", data = new {token, user = userLoggedIn,roleData}});
